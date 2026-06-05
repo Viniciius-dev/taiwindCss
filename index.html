@@ -242,7 +242,7 @@
 
       const langs = ['assembly', 'cpp', 'pascal', 'prolog', 'csharp'];
       langs.forEach(lang => {
-        const pct = Math.round((data[lang] / total) * 100);
+        const pct = Math.round(((data[lang] || 0) / total) * 100);
         document.getElementById(lang + '-bar').style.width = pct + '%';
         document.getElementById(lang + '-pct').textContent = pct + '%';
       });
@@ -304,7 +304,7 @@
         })
       });
 
-      // Se a resposta for ruim (ex: erro 400 que criamos no Java para voto repetido)
+      // Se a resposta for ex: erro 400 
       if (!response.ok) {
         const errorMsg = await response.text();
         alert(errorMsg);
@@ -317,7 +317,7 @@
       document.getElementById('success-msg').classList.remove('hidden');
       document.getElementById('vote-form').classList.add('hidden');
 
-      // Atualiza o gráfico de barras puxando os dados atualizados do banco!
+      // Atualiza o gráfico de barras puxando os dados atualizados do banco
       updateResults();
 
     } catch (error) {
@@ -326,7 +326,7 @@
     }
   });
 
-  // Carrega resultados ao abrir a página
+  
   updateResults();
 </script>
 
