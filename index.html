@@ -234,15 +234,30 @@
       if (!response.ok) return;
       
       const data = await response.json();
-      const total = data.assembly + data.cpp + data.pascal + data.prolog + (data.csharp || 0);
+      
+      const vAssembly = data.assembly || 0;
+      const vCpp = data['c++'] || data.cpp || 0; // cpp oq o ++ estava dando problemas
+      const vPascal = data.pascal || 0;
+      const vProlog = data.prolog || 0;
+      const vCsharp = data.csharp || 0;
+
+      const total = vAssembly + vCpp + vPascal + vProlog + vCsharp;
 
       if (total === 0) return;
 
       document.getElementById('results').classList.remove('hidden');
 
+      const votesMap = {
+        'assembly': vAssembly,
+        'cpp': vCpp,
+        'pascal': vPascal,
+        'prolog': vProlog,
+        'csharp': vCsharp
+      };
+
       const langs = ['assembly', 'cpp', 'pascal', 'prolog', 'csharp'];
       langs.forEach(lang => {
-        const pct = Math.round(((data[lang] || 0) / total) * 100);
+        const pct = Math.round((votesMap[lang] / total) * 100);
         document.getElementById(lang + '-bar').style.width = pct + '%';
         document.getElementById(lang + '-pct').textContent = pct + '%';
       });
